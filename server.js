@@ -10,7 +10,11 @@ const natural = require('natural');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+
+app.use(cors({
+  origin: 'https://terms-and-conditions-analyzer.netlify.app',
+  methods: ['GET', 'POST'],
+}));
 
 // Configure multer for file uploads
 const upload = multer({ dest: 'uploads/' });
