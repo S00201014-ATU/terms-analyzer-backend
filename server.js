@@ -19,6 +19,9 @@ app.use(cors({
 // Configure multer for file uploads
 const upload = multer({ dest: 'uploads/' });
 
+// Allowed file extensions
+const allowedExtensions = ['.txt', '.pdf', '.docx'];
+
 // Keyword extraction using natural
 function extractKeywords(text) {
   const tokenizer = new natural.WordTokenizer();
@@ -66,6 +69,11 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
   const filePath = req.file.path;
   const fileExtension = path.extname(req.file.originalname).toLowerCase();
+
+  // Validate file type
+  if (!allowedExtensions.includes(fileExtension)) {
+    return res.status(400).send('Unsupported file type. Only .txt, .pdf, and .docx files are allowed.');
+  }
 
   try {
     let text = '';
